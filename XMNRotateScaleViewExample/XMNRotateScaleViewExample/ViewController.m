@@ -29,7 +29,6 @@
     [self.view addSubview:rotateScaleView];
     
     
-    
     /** 配置一个contentView 是UILabel的XMNRotateScaleView **/
     UILabel *testLabel = [[UILabel alloc] init];
     testLabel.text = @"just test it";
