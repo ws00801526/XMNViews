@@ -23,16 +23,27 @@ typedef NS_ENUM(NSUInteger, XMNAnimTextFieldInputType) {
 
 @interface XMNAnimTextFiled : UIView
 
+/// ========================================
+/// @name   textField相关属性
+/// ========================================
+
 @property (nonatomic, copy, readonly) NSString *text;
 
+/** textFiled状态  默认XMNAnimTextFiledStateNormal */
 @property (nonatomic, assign) XMNAnimTextFieldState state;
+
+/** textFiled输入类型 默认XMNAnimTextFieldInputTypeDefault=UIKeyboardTypeDefault */
 @property (nonatomic, assign) XMNAnimTextFieldInputType inputType;
 
-
+/** textFiled代理 同UITextFiledDelegate */
 @property (nonatomic, weak) id<UITextFieldDelegate> delegate;
 
 /** 缩放系数,默认placeHolderIV,placeHolderL 缩放到多少 范围 0 - 1 默认.8f */
 @property (nonatomic, assign) CGFloat minimumScaleFactor;
+
+/// ========================================
+/// @name   placeHolder相关属性
+/// ========================================
 
 @property (nonatomic, copy) NSString *placeHolderText;
 
@@ -48,9 +59,5 @@ typedef NS_ENUM(NSUInteger, XMNAnimTextFieldInputType) {
 
 /** placeHolder 错误状态下 文字,边框颜色  默认绿色 */
 @property (nonatomic, strong) UIColor *placeHolderErrorColor;
-
-
-
-
 
 @end

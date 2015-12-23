@@ -8,10 +8,6 @@
 
 #import "XMNAnimTextFiled.h"
 
-#define kXMNMinFontSize  10
-#define kXMNMaxFontSize  16
-
-
 #pragma mark - _XMNBorderLayer 内部类
 
 /**
@@ -19,8 +15,10 @@
  */
 @interface _XMNBorderLayer : CAShapeLayer
 
-@property (nonatomic, assign) CGFloat start;
-@property (nonatomic, assign) CGFloat end;
+@property (nonatomic, assign) CGFloat centerPercent;
+@property (nonatomic, assign) CGFloat distancePercent;
+
+
 
 @end
 
@@ -28,26 +26,27 @@
 @implementation _XMNBorderLayer
 
 + (BOOL)needsDisplayForKey:(NSString *)key {
-    if ([key isEqualToString:@"start"] || [key isEqualToString:@"end"]) {
+    if ([key isEqualToString:@"distancePercent"] ) {
         return YES;
     }
     return [super needsDisplayForKey:key];
 }
 
-- (instancetype)init {
-    if ([super init]) {
-        self.start = self.end = .5f;
+- (instancetype)initWithLayer:(id)layer {
+    if ([super initWithLayer:layer]) {
+        _XMNBorderLayer *borderLayer = (_XMNBorderLayer *)layer;
+        self.centerPercent = borderLayer.centerPercent;
     }
     return self;
 }
 
 - (void)drawInContext:(CGContextRef)ctx {
-    CGContextMoveToPoint(ctx, self.start * self.frame.size.width, 0);
+    CGContextMoveToPoint(ctx, (self.centerPercent + self.distancePercent)* self.frame.size.width, 0);
     CGContextAddLineToPoint(ctx, self.frame.size.width, 0);
     CGContextAddLineToPoint(ctx, self.frame.size.width, self.frame.size.height);
     CGContextAddLineToPoint(ctx, 0, self.frame.size.height);
     CGContextAddLineToPoint(ctx, 0, 0);
-    CGContextAddLineToPoint(ctx, self.end * self.frame.size.width, 0);
+    CGContextAddLineToPoint(ctx, (self.centerPercent - self.distancePercent) * self.frame.size.width, 0);
     CGContextSetLineWidth(ctx, 1);
     CGContextSetStrokeColorWithColor(ctx, self.borderColor);
     CGContextStrokePath(ctx);
@@ -110,6 +109,8 @@
     self.tipsIV.frame = CGRectMake(self.bounds.size.width - 10 - self.tipsIV.frame.size.width, self.bounds.size.height/2 - self.tipsIV.frame.size.height/2, self.tipsIV.frame.size.width, self.tipsIV.frame.size.height);
 }
 
+
+
 - (void)dealloc {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
@@ -133,7 +134,6 @@
     [self addSubview:self.textField];
     
     self.minimumScaleFactor = .8f;
-    
 }
 
 
@@ -152,31 +152,19 @@
 }
 
 - (void)minAnimation {
-    
+
     CGFloat minWidth = self.placeHolderIV.frame.size.width * self.minimumScaleFactor + 8 + self.placeHolderL.frame.size.width * self.minimumScaleFactor + 20;
     _percent = minWidth/(self.frame.size.width*2);
 
-    CGFloat SS,SE,SSE,SEE;
-    SS = SE = .1f + _percent;
-    
-    SEE = .1f;
-    SSE = .1f + _percent * 2;
-    
-    self.borderLayer.start = SSE;
-    self.borderLayer.end = SEE;
-    CABasicAnimation *startAnim = [CABasicAnimation animationWithKeyPath:@"start"];
-    startAnim.fromValue = @(SS);
-    startAnim.toValue = @(SSE);
+    self.borderLayer.centerPercent = .1f + _percent;
+    self.borderLayer.distancePercent = _percent;
+    CABasicAnimation *startAnim = [CABasicAnimation animationWithKeyPath:@"distancePercent"];
+    startAnim.fromValue = @(.0f);
+    startAnim.toValue = @(_percent);
     startAnim.duration = .3f;
-    
-    CABasicAnimation *endAnim = [CABasicAnimation animationWithKeyPath:@"end"];
-    endAnim.fromValue = @(SE);
-    endAnim.toValue = @(SEE);
-    endAnim.duration = .3f;
-    
-    [self.borderLayer addAnimation:startAnim forKey:@"start"];
-    [self.borderLayer addAnimation:endAnim forKey:@"end"];
-    
+
+    [self.borderLayer addAnimation:startAnim forKey:@"distancePercent"];
+
     [UIView animateWithDuration:.5f animations:^{
         self.placeHolderL.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
         self.placeHolderIV.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
@@ -186,26 +174,19 @@
 
 - (void)maxAnimation {
 
-    CABasicAnimation *startAnim = [CABasicAnimation animationWithKeyPath:@"start"];
-    startAnim.fromValue = @(.1f+2*_percent);
-    startAnim.toValue = @(.1f+_percent);
+    self.borderLayer.distancePercent = .0f;
+    CABasicAnimation *startAnim = [CABasicAnimation animationWithKeyPath:@"distancePercent"];
+    startAnim.fromValue = @(_percent);
+    startAnim.toValue = @(0.0f);
     startAnim.duration = .3f;
     
-    CABasicAnimation *endAnim = [CABasicAnimation animationWithKeyPath:@"end"];
-    endAnim.fromValue = @(.1f);
-    endAnim.toValue = @(.1f + _percent);
-    endAnim.duration = .3f;
-
+    [self.borderLayer addAnimation:startAnim forKey:@"sss"];
     
-    [UIView animateKeyframesWithDuration:.3f delay:.0f options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+    [UIView animateWithDuration:.3f animations:^{
         self.placeHolderL.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         self.placeHolderIV.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         [self updatePlaceHolderCenter:CGPointMake(16 + self.placeHolderIV.frame.size.width/2, self.frame.size.height/2)];
-    } completion:^(BOOL finished) {
-        [self.borderLayer addAnimation:startAnim forKey:@"start"];
-        [self.borderLayer addAnimation:endAnim forKey:@"end"];
-        self.borderLayer.start = self.borderLayer.end = .1f + _percent;
-    }];
+    } completion:nil];
     
 }
 
@@ -221,6 +202,14 @@
     }else {
         self.placeHolderL.center = CGPointMake(center.x + self.placeHolderIV.frame.size.width/2 + 8 + self.placeHolderL.frame.size.width/2, center.y);
     }
+}
+
+- (void)handleTipsTap {
+    if (self.inputType == XMNAnimTextFieldInputTypePassword) {
+        self.textField.secureTextEntry = !self.textField.secureTextEntry;
+        [self.textField sizeToFit];
+    }
+    //TODO delegate 通知回调tipsAction
 }
 
 #pragma mark - XMNAnimTextField Setters
@@ -344,7 +333,7 @@
 - (UILabel *)placeHolderL {
     if (!_placeHolderL) {
         _placeHolderL = [[UILabel alloc] initWithFrame:CGRectMake(8, self.frame.size.height/2, 0, 0)];
-        _placeHolderL.font = [UIFont systemFontOfSize:kXMNMaxFontSize];
+        _placeHolderL.font = [UIFont systemFontOfSize:16];
         _placeHolderL.textColor = [UIColor lightGrayColor];
         _placeHolderL.highlightedTextColor = [UIColor greenColor];
     }
@@ -362,7 +351,11 @@
 - (UIImageView *)tipsIV {
     if (!_tipsIV) {
         _tipsIV = [[UIImageView alloc] init];
-        [_tipsIV setTintColor:[UIColor greenColor]];
+        _tipsIV.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer *tipsTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTipsTap)];
+        [_tipsIV addGestureRecognizer:tipsTap];
+        
     }
     return _tipsIV;
 }

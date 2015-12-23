@@ -37,6 +37,7 @@
     
     XMNAnimTextFiled *passwordTF = [[XMNAnimTextFiled alloc] initWithFrame:CGRectMake(20, 200, self.view.frame.size.width - 40, 70)];
     [passwordTF setTipsIcon:[UIImage imageNamed:@"invisible_icon"]];
+    [passwordTF setPlaceHolderIcon:[UIImage imageNamed:@"1"]];
     [passwordTF setPlaceHolderText:@"请输入密码"];
     [passwordTF setInputType:XMNAnimTextFieldInputTypePassword];
     [self.view addSubview:self.passwordTF = passwordTF];

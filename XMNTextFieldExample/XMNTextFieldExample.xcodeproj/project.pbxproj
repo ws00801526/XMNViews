@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		970829AA1C228A6000AA3CFE /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 970829A91C228A6000AA3CFE /* 1.png */; };
+		970829AA1C228A6000AA3CFE /* 1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 970829A91C228A6000AA3CFE /* 1@2x.png */; };
 		974577C31C2410F000E278A3 /* invisible_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 974577C21C2410F000E278A3 /* invisible_icon@2x.png */; };
 		977D4CA51C214B59007430E5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 977D4CA41C214B59007430E5 /* main.m */; };
 		977D4CA81C214B59007430E5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 977D4CA71C214B59007430E5 /* AppDelegate.m */; };
@@ -38,7 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		970829A91C228A6000AA3CFE /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		970829A91C228A6000AA3CFE /* 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1@2x.png"; sourceTree = "<group>"; };
 		974577C21C2410F000E278A3 /* invisible_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invisible_icon@2x.png"; sourceTree = "<group>"; };
 		977D4CA01C214B59007430E5 /* XMNTextFieldExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XMNTextFieldExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		977D4CA41C214B59007430E5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				977D4CB11C214B59007430E5 /* LaunchScreen.storyboard */,
 				977D4CB41C214B59007430E5 /* Info.plist */,
 				974577C21C2410F000E278A3 /* invisible_icon@2x.png */,
-				970829A91C228A6000AA3CFE /* 1.png */,
+				970829A91C228A6000AA3CFE /* 1@2x.png */,
 				977D4CA31C214B59007430E5 /* Supporting Files */,
 			);
 			path = XMNTextFieldExample;
@@ -226,6 +226,7 @@
 				TargetAttributes = {
 					977D4C9F1C214B59007430E5 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = N9G92VG962;
 					};
 					977D4CB81C214B59007430E5 = {
 						CreatedOnToolsVersion = 7.2;
@@ -266,7 +267,7 @@
 				977D4CB01C214B59007430E5 /* Assets.xcassets in Resources */,
 				977D4CAE1C214B59007430E5 /* Main.storyboard in Resources */,
 				974577C31C2410F000E278A3 /* invisible_icon@2x.png in Resources */,
-				970829AA1C228A6000AA3CFE /* 1.png in Resources */,
+				970829AA1C228A6000AA3CFE /* 1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +436,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = XMNTextFieldExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.XMFraker.XMNTextFieldExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -446,7 +449,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = XMNTextFieldExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.XMFraker.XMNTextFieldExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
