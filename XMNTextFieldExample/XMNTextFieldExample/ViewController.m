@@ -32,6 +32,7 @@
     
     XMNAnimTextFiled *usernameTF = [[XMNAnimTextFiled alloc] initWithFrame:CGRectMake(20, 100, self.view.frame.size.width - 40, 70)];
     [usernameTF setPlaceHolderText:@"请输入用户名"];
+    usernameTF.text = @"username";
     [self.view addSubview:self.usernameTF = usernameTF];
     
     

@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, XMNAnimTextFieldInputType) {
 /// @name   textField相关属性
 /// ========================================
 
-@property (nonatomic, copy, readonly) NSString *text;
+@property (nonatomic, copy) NSString *text;
 
 /** textFiled状态  默认XMNAnimTextFiledStateNormal */
 @property (nonatomic, assign) XMNAnimTextFieldState state;

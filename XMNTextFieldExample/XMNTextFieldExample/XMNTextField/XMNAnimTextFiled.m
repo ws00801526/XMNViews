@@ -151,7 +151,7 @@
     
 }
 
-- (void)minAnimation {
+- (void)minAnimation:(BOOL)animated {
 
     CGFloat minWidth = self.placeHolderIV.frame.size.width * self.minimumScaleFactor + 8 + self.placeHolderL.frame.size.width * self.minimumScaleFactor + 20;
     _percent = minWidth/(self.frame.size.width*2);
@@ -165,14 +165,21 @@
 
     [self.borderLayer addAnimation:startAnim forKey:@"distancePercent"];
 
-    [UIView animateWithDuration:.5f animations:^{
+    if (animated) {
+        [UIView animateWithDuration:.5f animations:^{
+            self.placeHolderL.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
+            self.placeHolderIV.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
+            [self updatePlaceHolderCenter:CGPointMake(self.frame.size.width * .1f + 10 + self.placeHolderIV.frame.size.width*self.minimumScaleFactor/2, 0)];
+        } completion:nil];
+    }else {
         self.placeHolderL.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
         self.placeHolderIV.transform = CGAffineTransformMakeScale(self.minimumScaleFactor, self.minimumScaleFactor);
         [self updatePlaceHolderCenter:CGPointMake(self.frame.size.width * .1f + 10 + self.placeHolderIV.frame.size.width*self.minimumScaleFactor/2, 0)];
-    } completion:nil];
+    }
+    
 }
 
-- (void)maxAnimation {
+- (void)maxAnimation:(BOOL)animated {
 
     self.borderLayer.distancePercent = .0f;
     CABasicAnimation *startAnim = [CABasicAnimation animationWithKeyPath:@"distancePercent"];
@@ -182,11 +189,17 @@
     
     [self.borderLayer addAnimation:startAnim forKey:@"sss"];
     
-    [UIView animateWithDuration:.3f animations:^{
+    if (animated) {
+        [UIView animateWithDuration:.3f animations:^{
+            self.placeHolderL.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+            self.placeHolderIV.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+            [self updatePlaceHolderCenter:CGPointMake(16 + self.placeHolderIV.frame.size.width/2, self.frame.size.height/2)];
+        } completion:nil];
+    }else {
         self.placeHolderL.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         self.placeHolderIV.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
         [self updatePlaceHolderCenter:CGPointMake(16 + self.placeHolderIV.frame.size.width/2, self.frame.size.height/2)];
-    } completion:nil];
+    }
     
 }
 
@@ -226,7 +239,7 @@
             self.placeHolderL.textColor = self.placeHolderColor;
             self.borderLayer.borderColor = self.placeHolderColor.CGColor;
             [self.borderLayer setNeedsDisplay];
-            self.textField.text.length == 0 ? [self maxAnimation] : 0;
+            self.textField.text.length == 0 ? [self maxAnimation:YES] : 0;
         }
             break;
         case XMNAnimTextFieldStateEditing:
@@ -235,7 +248,7 @@
             self.placeHolderL.textColor = self.placeHolderHighlightColor;
             self.borderLayer.borderColor = self.placeHolderHighlightColor.CGColor;
             [self.borderLayer setNeedsDisplay];
-            self.textField.text.length == 0 ? [self minAnimation] : 0;
+            self.textField.text.length == 0 ? [self minAnimation:YES] : 0;
         }
             break;
         case XMNAnimTextFieldStateError:
@@ -311,6 +324,10 @@
     _placeHolderErrorColor = placeHolderErrorColor;
 }
 
+- (void)setText:(NSString *)text {
+    _textField.text = text;
+    [self minAnimation:NO];
+}
 
 #pragma mark - XMNAnimTextField Getters
 
